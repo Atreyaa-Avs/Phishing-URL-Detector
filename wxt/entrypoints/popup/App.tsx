@@ -8,9 +8,9 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='flex'>
         <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="logo" alt="WXT logo" />
+          <img src={wxtLogo} className="logo size-44" alt="WXT logo" />
         </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
