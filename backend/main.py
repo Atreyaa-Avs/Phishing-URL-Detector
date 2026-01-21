@@ -19,26 +19,21 @@ app.add_middleware(
 class UrlRequest(BaseModel):
     url: str
 
+# Load model ONCE
+gbc = pickle.load(open("./gbc_model.pkl","rb"))
+
 @app.post("/predict")
 def predict(req: UrlRequest):
-    url = req.url
-    gbc = pickle.load(open("./gbc_model.pkl","rb"))
-    obj = FeatureExtraction(url)
+    obj = FeatureExtraction(req.url)
     x = np.array(obj.getFeaturesList()).reshape(1, 30)
 
+    proba = gbc.predict_proba(x)[0]
+    pred = gbc.predict(x)[0]
 
-    # Get prediction probabilities
-    y_pro_phishing = gbc.predict_proba(x)[0, 0]
-    y_pro_non_phishing = gbc.predict_proba(x)[0, 1]
-
-    y_pred = gbc.predict(x)[0]
-
-
-    confidence = max(y_pro_phishing, y_pro_non_phishing) * 100
-    label = "Safe Website" if y_pred == 1 else "Phishing Website"
-
-    return {"label": label, "confidence": confidence}
-
+    return {
+        "label": "Safe Website" if pred == 1 else "Phishing Website",
+        "confidence": round(max(proba) * 100, 2)
+    }
 
 if __name__ == "__main__":
     uvicorn.run("main:app",host="0.0.0.0",port=3000,reload=True)
