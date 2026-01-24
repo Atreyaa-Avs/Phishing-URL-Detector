@@ -35,7 +35,37 @@ def root():
         "message": "API is running."
     }
 
+@app.post("/preview", response_model=PreviewResponse)
+def preview(req: UrlRequest):
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (LinkPreviewBot)"
+        }
 
+        res = requests.get(req.url, headers=headers, timeout=5)
+        res.raise_for_status()
+
+        soup = BeautifulSoup(res.text, "html.parser")
+
+        title = soup.title.string if soup.title else ""
+
+        icon_link = soup.find("link", rel=lambda x: x and "icon" in x.lower())
+
+        favicon = (
+            urljoin(req.url, icon_link["href"])
+            if icon_link and icon_link.get("href")
+            else urljoin(req.url, "/favicon.ico")
+        )
+
+        return {
+            "title": title,
+            "favicon": favicon
+        }
+    except Exception as e:
+        return {
+            "title": "",
+            "favicon": ""
+        }
 
 @app.post("/predict")
 def predict(req: UrlRequest):
