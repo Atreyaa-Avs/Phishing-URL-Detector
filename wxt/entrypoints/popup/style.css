@@ -1,13 +1,39 @@
 @import "tailwindcss";
 
+@theme {
+  --font-gilroy: Gilroy, system-ui, sans-serif;
+  --font-sans: Gilroy, system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../../fonts/Gilroy-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Gilroy, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: var(--color-gray-100/50);
+  background-color: var(--color-gray-200);
   color: black;
 
   font-synthesis: none;
@@ -19,15 +45,14 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
+  min-width: 420px;
   min-height: 100vh;
 }
 
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
   text-align: center;
 }

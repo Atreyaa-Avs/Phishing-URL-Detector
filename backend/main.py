@@ -5,6 +5,9 @@ import pickle
 import uvicorn
 from feature import FeatureExtraction
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 app = FastAPI()
 
@@ -19,8 +22,20 @@ app.add_middleware(
 class UrlRequest(BaseModel):
     url: str
 
+class PreviewResponse(BaseModel):
+    title: str | None
+    favicon: str | None
+
 # Load model ONCE
 gbc = pickle.load(open("./gbc_model.pkl","rb"))
+
+@app.get("/")
+def root():
+    return {
+        "message": "API is running."
+    }
+
+
 
 @app.post("/predict")
 def predict(req: UrlRequest):
@@ -36,4 +51,4 @@ def predict(req: UrlRequest):
     }
 
 if __name__ == "__main__":
-    uvicorn.run("main:app",host="0.0.0.0",port=3000,reload=True)
+    uvicorn.run("main:app",port=3000,reload=True)
