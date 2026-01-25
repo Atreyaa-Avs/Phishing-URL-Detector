@@ -4,7 +4,13 @@ import { APIResponse } from "@/types/Response";
 import Loader from "./ui/Loader";
 import AcceptSvg from "@/assets/accept.svg";
 import RejectSvg from "@/assets/reject.svg";
-import RedirectSvg from "@/assets/redirect.svg";
+import VisitButton from "./actions/VisitButton";
+import CopyButton from "./actions/CopyButton";
+import ScanButton from "./actions/ScanButton";
+import WhySafe from "./actions/WhySafe";
+import ReportButton from "./actions/ReportButton";
+import PreviewButton from "./actions/PreviewButton";
+import ResetButton from "./actions/ResetButton";
 
 const URLInput = () => {
   const [url, setUrl] = useState("");
@@ -40,7 +46,7 @@ const URLInput = () => {
       <p className="font-medium text-lg text-left mb-2">Enter URL:</p>
 
       <div className="flex gap-2 items-center">
-        <GlowingInput setUrl={setUrl} onEnter={() => handleSubmit(url)} />
+        <GlowingInput url={url} setUrl={setUrl} onEnter={() => handleSubmit(url)} />
 
         <button
           onClick={() => handleSubmit(url)}
@@ -69,49 +75,58 @@ const URLInput = () => {
           <p className="my-1 text-sm text-gray-400 break-all text-center">
             {url}
           </p>
-          <div className="flex pb-2 w-full text-left justify-between items-center">
+          <div className="flex w-full text-left justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 mb-3">
             <div>
-              <p className="text-lg font-bold">{result?.label}</p>
-              <p className="text-lg">
+              <p
+                className={`text-2xl font-bold ${
+                  result?.label === "Safe Website"
+                    ? "text-green-600"
+                    : "text-red-600"
+                } mb-1`}
+              >
+                {result?.label}
+              </p>
+              <p className="text-lg text-gray-600">
                 <span className="font-bold">Confidence:</span>{" "}
                 {result?.confidence}%
               </p>
             </div>
             <div>
               {result.label === "Safe Website" ? (
-                <img
-                  src={AcceptSvg}
-                  alt="Accept"
-                  style={{ width: "50px", height: "50px" }}
-                />
+                <img src={AcceptSvg} alt="Accept" className="w-12 h-12" />
               ) : (
-                <img
-                  src={RejectSvg}
-                  alt="Reject"
-                  style={{ width: "50px", height: "50px" }}
-                />
+                <img src={RejectSvg} alt="Reject" className="w-12 h-12" />
               )}
             </div>
           </div>
-          {result.label === "Safe Website" && (
-            <button
-              onClick={() =>
-                window.open(
-                  url.startsWith("http") ? url : `https://${url}`,
-                  "_blank",
-                  "noopener,noreferrer",
-                )
-              }
-              className="flex justify-center items-center gap-2 mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition hover:cursor-pointer"
-            >
-              <span className="text-base">Visit Website{" "}</span>
-              <img
-                src={RedirectSvg}
-                alt="Redirect"
-                className="size-5 fill-white"
+
+          <div className="grid grid-cols-2 gap-2">
+            {/* Safe Actions */}
+            {result.label === "Safe Website" && (
+              <>
+                <VisitButton url={url} />
+                <CopyButton url={url} />
+              </>
+            )}
+
+            {/* Universal Actions */}
+            <ScanButton url={url} />
+
+            {result.label === "Safe Website" && <WhySafe />}
+
+            {result.label === "Safe Website" && <PreviewButton />}
+
+            <ReportButton />
+
+            <div className="col-span-2">
+              <ResetButton
+                onReset={() => {
+                  setUrl("");
+                  setResult(null);
+                }}
               />
-            </button>
-          )}
+            </div>
+          </div>
         </div>
       )}
     </div>
