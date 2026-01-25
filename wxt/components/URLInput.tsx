@@ -4,6 +4,7 @@ import { APIResponse } from "@/types/Response";
 import Loader from "./ui/Loader";
 import AcceptSvg from "@/assets/accept.svg";
 import RejectSvg from "@/assets/reject.svg";
+import RedirectSvg from "@/assets/redirect.svg";
 
 const URLInput = () => {
   const [url, setUrl] = useState("");
@@ -92,6 +93,25 @@ const URLInput = () => {
               )}
             </div>
           </div>
+          {result.label === "Safe Website" && (
+            <button
+              onClick={() =>
+                window.open(
+                  url.startsWith("http") ? url : `https://${url}`,
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
+              className="flex justify-center items-center gap-2 mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition hover:cursor-pointer"
+            >
+              <span className="text-base">Visit Website{" "}</span>
+              <img
+                src={RedirectSvg}
+                alt="Redirect"
+                className="size-5 fill-white"
+              />
+            </button>
+          )}
         </div>
       )}
     </div>
