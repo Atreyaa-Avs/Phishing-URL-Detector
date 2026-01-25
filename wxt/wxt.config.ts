@@ -7,4 +7,8 @@ export default defineConfig({
   vite: () => ({
     plugins: [tailwindcss()],
   } as WxtViteConfig),
+  manifest: {
+    permissions: ["activeTab"],
+    host_permissions: ["http://127.0.0.1:3000/*"]
+  }
 });

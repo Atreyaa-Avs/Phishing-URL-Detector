@@ -8,6 +8,7 @@ const App = () => {
     <div className='flex flex-col'>
       <Header />
       <URLInput />
+      <div className='loader'/>
     </div>
   )
 }
