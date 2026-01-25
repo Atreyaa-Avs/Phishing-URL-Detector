@@ -1,6 +1,9 @@
 import { useState } from "react";
 import GlowingInput from "./ui/GlowingInput";
 import { APIResponse } from "@/types/Response";
+import Loader from "./ui/Loader";
+import AcceptSvg from "@/assets/accept.svg";
+import RejectSvg from "@/assets/reject.svg";
 
 const URLInput = () => {
   const [url, setUrl] = useState("");
@@ -25,7 +28,7 @@ const URLInput = () => {
       const data: APIResponse = await response.json();
       setResult(data);
     } catch (err) {
-      setResult({label: "Error contacting server", confidence: 0});
+      setResult({ label: "Error contacting server", confidence: 0 });
     } finally {
       setLoading(false);
     }
@@ -36,10 +39,7 @@ const URLInput = () => {
       <p className="font-medium text-lg text-left mb-2">Enter URL:</p>
 
       <div className="flex gap-2 items-center">
-        <GlowingInput
-          setUrl={setUrl}
-          onEnter={() => handleSubmit(url)}
-        />
+        <GlowingInput setUrl={setUrl} onEnter={() => handleSubmit(url)} />
 
         <button
           onClick={() => handleSubmit(url)}
@@ -56,10 +56,44 @@ const URLInput = () => {
       </div>
 
       {/* Debug / Output */}
-      {loading && <p className="my-1 text-sm text-gray-400 break-all">{url}</p>}
+      {loading && (
+        <div className="flex flex-col gap-3 pb-2 w-full">
+          <p className="my-1 text-sm text-gray-400 break-all">{url}</p>
+          <Loader />
+        </div>
+      )}
 
-      <p>{result?.label}</p>
-      <p>{result?.confidence}</p>
+      {result && (
+        <div>
+          <p className="my-1 text-sm text-gray-400 break-all text-center">
+            {url}
+          </p>
+          <div className="flex pb-2 w-full text-left justify-between items-center">
+            <div>
+              <p className="text-lg font-bold">{result?.label}</p>
+              <p className="text-lg">
+                <span className="font-bold">Confidence:</span>{" "}
+                {result?.confidence}%
+              </p>
+            </div>
+            <div>
+              {result.label === "Safe Website" ? (
+                <img
+                  src={AcceptSvg}
+                  alt="Accept"
+                  style={{ width: "50px", height: "50px" }}
+                />
+              ) : (
+                <img
+                  src={RejectSvg}
+                  alt="Reject"
+                  style={{ width: "50px", height: "50px" }}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
