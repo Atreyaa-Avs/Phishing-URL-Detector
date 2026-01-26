@@ -19,7 +19,8 @@ const LinkTooltip = ({ content }: { content: TooltipContent }) => {
         fontSize: "12px",
         whiteSpace: "nowrap",
         boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-        minWidth: "420px",
+        minWidth: "250px",
+        maxWidth: "420px",
       }}
     >
       {content.loading ? (
@@ -47,9 +48,10 @@ const LinkTooltip = ({ content }: { content: TooltipContent }) => {
               fontWeight: "medium",
               fontFamily: "Gilroy, sans-serif",
               marginTop: "10px",
+              textWrap: "pretty",
             }}
           >
-            {content.label}
+            {content.label.slice(0, 60) + (content.label.length > 60 ? "..." : "")}
           </p>
           <div className="loader" style={{ width: "100%" }}></div>
         </div>
@@ -65,7 +67,7 @@ const LinkTooltip = ({ content }: { content: TooltipContent }) => {
             marginTop: "auto",
           }}
         >
-          <div>
+          <div style={{ flexBasis: "70%", display: "flex", flexDirection: "column" }}>
             <h1
               style={{
                 fontSize: "22px",
@@ -82,6 +84,7 @@ const LinkTooltip = ({ content }: { content: TooltipContent }) => {
                 fontWeight: "medium",
                 fontFamily: "Gilroy, sans-serif",
                 marginBottom: "-3px",
+                textWrap: "pretty",
               }}
             >
               {content.url}
