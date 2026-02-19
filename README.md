@@ -65,9 +65,9 @@ Your ONNX model (`gbc_model.onnx`) should load without errors.
 
 ---
 
-## Frontend Setup (Chrome Extension)
+## Frontend Setup (Chrome Extension) (Uses WXT Framework)
 
-1. **Navigate to frontend folder:**
+1. **Navigate to wxt folder:**
 
 ```powershell
 cd wxt
