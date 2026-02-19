@@ -14,12 +14,18 @@ cd backend
 
 2. **Create virtual environment with Python 3.11:**
 
+If uv is not installed run:
+```powershell
+# Install uv
+pip install uv
+```
+
 ```powershell
 # Create venv
 uv venv --python 3.11
 
 # Activate venv
-uv\Scripts\activate
+.venv\Scripts\activate (Windows)
 ```
 
 3. **Install dependencies:**
