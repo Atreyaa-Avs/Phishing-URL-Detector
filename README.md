@@ -70,7 +70,7 @@ Your ONNX model (`gbc_model.onnx`) should load without errors.
 1. **Navigate to frontend folder:**
 
 ```powershell
-cd frontend
+cd wxt
 ```
 
 2. **Install dependencies:**
