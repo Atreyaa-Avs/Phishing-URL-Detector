@@ -4,6 +4,32 @@
 
 ---
 
+## About The Project
+
+This project is a comprehensive Phishing URL Detection tool that leverages a machine learning model running on a Python backend, accessible via a Chrome extension. When a user checks a URL, the system predicts whether the website is legitimate or a phishing attempt.
+
+### Functionality & Algorithms
+
+The detection is powered by a **Gradient Boosting Classifier (GBC)** exported to ONNX format for fast inference. The prediction pipeline consists of:
+
+1. **Feature Extraction**: The backend takes a URL and extracts **30 distinct features** using lexical analysis, DOM parsing, and third-party lookups. Features include:
+   - URL-based properties (IP usage, URL length, presence of `@` symbol, shortening services, etc.)
+   - Webpage content (iFrames, right-click disabling, pop-ups, forms)
+   - External services (Domain age via WHOIS, Google indexing, PageRank)
+2. **Model Inference**: The extracted 30 features are fed into the `gbc_model.onnx` model, which computes a probability score and classifies the site as either a "Safe Website" or "Phishing Website".
+
+#### After training, the model was exported to ONNX format (`gbc_model.onnx`) to ensure fast and lightweight inference in the backend.
+
+### Project Structure & Key Files
+
+- **`wxt/`**: Contains the frontend Chrome Extension code built with the WXT framework.
+- **`backend/main.py`**: The FastAPI application that provides REST endpoints (`/predict` and `/preview`) to interact with the model and fetch webpage metadata.
+- **`backend/feature.py`**: The core feature extraction module that analyzes the target URL using `BeautifulSoup`, `whois`, and `requests`.
+- **`backend/gbc_model.onnx`**: The pre-trained Gradient Boosting model optimized for ONNX Runtime.
+- **`model/Copy_of_Phishingproject.ipynb`**: The Jupyter Notebook used for dataset processing and training the machine learning model.
+
+---
+
 ## Backend Setup (Python 3.11 + ONNX)
 
 1. **Navigate to backend folder:**
